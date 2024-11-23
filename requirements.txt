@@ -1,0 +1,7 @@
+transformers 
+sentence-transformers 
+faiss-cpu 
+faster-whisper 
+TTS 
+flask 
+flask-socketio

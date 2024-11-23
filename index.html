@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Rachel - Your Voice Assistant</title>
+</head>
+<body>
+    <h1>Welcome to Rachel - Your Motivational Assistant</h1>
+    <div id="chat">
+        <div id="messages"></div>
+    </div>
+    <button id="start">Start Conversation</button>
+
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        const button = document.getElementById("start");
+        const messages = document.getElementById("messages");
+
+        button.addEventListener("click", () => {
+            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                const recorder = new MediaRecorder(stream);
+
+                recorder.addEventListener("dataavailable", event => {
+                    const reader = new FileReader();
+                    reader.readAsArrayBuffer(event.data);
+                    reader.onloadend = () => {
+                        socket.emit("audio", reader.result);
+                    };
+                });
+
+                recorder.start();
+                setInterval(() => recorder.stop(), 3000);
+            });
+        });
+
+        socket.on("response", data => {
+            const message = document.createElement("p");
+            message.textContent = `Rachel: ${data.text}`;
+            messages.appendChild(message);
+
+            if (data.audio) {
+                const audio = new Audio(data.audio);
+                audio.play();
+            }
+        });
+    </script>
+</body>
+</html>

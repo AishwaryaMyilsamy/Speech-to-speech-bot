@@ -1,0 +1,27 @@
+Start Interaction
+    |
+    v
+User Speaks (Speech Input)
+    |
+    v
+Speech Recognition (Faster-Whisper)
+    |
+    v
+Convert Audio to Text
+    |
+    +--------------------------+
+    |                          |
+    v                          v
+Process Input          Retrieve Context (RAG)
+    |                          |
+    v                          v
+    +-------------------> LLM Response (GPT-Neo)
+                           |
+                           v
+               Convert Text to Speech (pyttsx3)
+                           |
+                           v
+            Output Response (Speech + Text)
+                           |
+                           v
+                  End Interaction
